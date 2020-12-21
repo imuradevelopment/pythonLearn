@@ -1,6 +1,11 @@
 # Listの宣言
 z = ['a', 'b', 'c']
 x = [1, 2, 3.4, "a", z]
+# tuple
+# リストと同じように要素の存在確認や、インデックシング、len、min、maxは使用できますが、
+# 要素の差し替えや要素の追加、削除は出来ません。
+# 速度が早い
+tuple = (1, 2, 3.4, "a", "test")
 # in
 a_in_list = 'a' in z
 d_in_list = 'd' in z
@@ -23,7 +28,7 @@ print("changed x {0}".format(x))
 a = z + x
 print("a {0}".format(a))
 
-# 空のリスト
+# 空のリスト作成からの操作
 y = []  # create empty list
 # append, remove, reverse, sort
 y.append("spam")

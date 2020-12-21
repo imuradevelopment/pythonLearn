@@ -1,13 +1,11 @@
 # エンコード指定
 # -*- coding: utf-8 -*-
 print("こんにちは世界")
-
 # 文字列宣言
 text1 = "abc"
 # 改行あり
 text = """sdvc
 b.jb"""
-
 # in
 a_in_text = "a" in text1
 b_in_text = "d" in text1
