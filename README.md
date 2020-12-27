@@ -41,7 +41,7 @@ str_var = str_var * 3
 # max()
 ```
 
-## List, Tuple, set, dictionary
+## List, Tuple
 
 ```python
 # 宣言
@@ -113,3 +113,113 @@ dictionary_var.pop('key3', 'No Existance')
 # min()
 # max()
 ```
+
+## 内包表記
+
+```python
+# 内包表記を使用するとリスト、セット、ディクショナリのデータ操作を短い行数で記述できます。
+# また処理速度も早くなるので、膨大な要素を持つ場合はこちらを使いましょう。
+
+
+# Listの内包表記
+result = [x**2 for x in [1, 2, 3, 4, 5]]
+print("{0}".format(result)) # [1, 4, 9, 16, 25]
+# 内包表記なし
+result = []
+for i in [1, 2, 3, 4, 5]:
+    result.append(i**2)
+print("{0}".format(result))
+# リスト内包表記は、リストの要素内で処理する要素、処理しない要素を条件指定することができます。
+print("{0}".format( [x*10+1 for x in range(1,6) if x > 2 and x < 5]))
+# [31, 41]
+# 内包表記なし
+result = []
+for x in range(1,6):
+    if x > 2 and x < 5:
+        result.append(x*10+1)
+print("{0}".format(result))
+
+# setの内包表記
+# 内包表記はセットでも使用可能です。使用方法はリスト内包表記と同じです。
+print("{0}".format( {x*10+1 for x in range(1,6) if x > 2 and x < 5}))
+# set([41, 31])
+
+# dictionaryの内包表記
+print("{0}".format( {str(x):x**2 for x in range(1,6)}))
+```
+
+## 制御構文
+
+```python
+# if
+# 比較演算子
+# ==, != , <, <=, >, =>
+# and, or, not
+# falsyな値(空のリスト, タプル, ディクショナリ, セット, None(値が存在しない」ことを示す特別な型))
+# is None
+flg_true = True
+flg_false = False
+flg_none = None
+list_var = ["a", "b"]
+if list_var in "c" or flg_false == True :
+  print(False)
+elif flg_true != True :
+  print(False)
+elif not(list_var in "a" and flg_none == None) :
+  print(False)
+else :
+  print(True)
+
+# for
+# for i in range() :
+for i in range(1,10):
+   print("{0}".format(i))
+# enumurate
+a = ["a","b","c","d","e"]
+for idx,elem in enumerate(a):
+   print("{0} = {1}".format(idx,elem))
+else:
+    print("for loop done")
+# while
+a = ["ok","ok","ok","ng","ok"]
+i = 0
+while a[i] == 'ok':
+    print("a[{0}] is ok".format(i))
+    i = i + 1
+else:
+    print("while loop done")
+```
+
+## 例外
+
+```python
+# try/except
+try:
+    a = 10 / 0
+    print("{0}".format(a))
+except ZeroDivisionError as e:
+    print("type:{0}".format(type(e)))
+    print("args:{0}".format(e.args))
+    print("message:{0}".format(e.message))
+    print("{0}".format(e))
+# type:<type 'exceptions.ZeroDivisionError'>
+# args:('integer division or modulo by zero',)
+# message:integer division or modulo by zero
+# integer division or modulo by zero
+
+# else/finaly
+try:
+    a = 10 / 0
+#    a = 10 / 1
+    print("{0}".format(a))
+except ZeroDivisionError as e:
+    print("ZeroDivisionError!!")
+else:
+    print("else statement")
+finally:
+    print("finally statement")
+```
+
+
+## 関数
+
