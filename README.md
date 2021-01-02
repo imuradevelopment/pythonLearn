@@ -220,6 +220,60 @@ finally:
     print("finally statement")
 ```
 
-
 ## 関数
 
+```python
+# def 関数名 ( 引数 ):
+#     処理
+#     return 戻り値
+# return省略
+# デフォルト引数
+# グローバル変数の指定
+# global 変数名
+
+# *可変長引数(tuple型として渡される)
+def spam(*args):
+    print("{0}".format(args))
+
+spam("arg1",2,3.4)
+
+# **可変長引数(dictionary型として渡される)
+def spam2(**args):
+    print("{0}".format(args))
+
+spam(taro=165,jiro=180,saburo=170)
+```
+
+## クラス
+
+```python
+# 先頭大文字
+# 「クラス名()」でインスタンス化
+# 最低1つの引数を持つ
+# 最初の引数は必ずselfという名前にする慣例がある
+# Javaで言う「this」
+# コンストラクタ
+#   「__init__()」であらわされる
+# デストラクタ(オブジェクトが不要となりPythonが削除する時に自動で実行される関数)
+#   「__del__ 」であらわされるが、ほとんどの場合デストラクタは定義しない。
+# 継承
+#   
+# 1.クラスSpamのオブジェクトspamを生成します(コンストラクタで初期化)
+# 2.spamオブジェクトがhamメソッドを呼び出します
+# 3.spamオブジェクトのhamメソッドはspamオブジェクト(=自身)のeggメソッドを呼び出します
+# 4.spamオブジェクトのeggメソッドは引数のmsgを出力します
+# 5.eggメソッドはspamオブジェクトの変数valを出力します
+class Spam:
+    def __init__(self,val2):
+        self.val2 = val2
+    val = 100
+    def ham(self):
+        self.egg('call method')
+
+    def egg(self,msg):
+        print("{0}".format(msg))
+        print(("{0}".format(self.val)))
+
+spam = Spam(200)
+spam.ham()
+```
