@@ -404,20 +404,21 @@ spam.ham()
 ファイルはそれぞれ以下のような役割を持っています:  
 外側の mysite/ ルートディレクトリは、このプロジェクトのただの入れ物です。  
 この名前は Django に関係しませんので、好きな名前に変更できます。  
-- manage.py:
+- manage.py:  
 Django プロジェクトに対する様々な操作を行うためのコマンドラインユーティリティです｡  
 詳しくは django-admin と manage.py 内の manage.py を参照してください｡  
 内側の mysite/ ディレクトリは、このプロジェクトの実際の Python パッケージです。  
 この名前が Python パッケージの名前であり、 import の際に 使用する名前です (例えば import mysite.urls) 。  
-- mysite/__init__.py:
+- mysite/__init__.py:  
 このディレクトリが Python パッケージであることを Python に知らせるための空のファイルです。  
 Python の初心者は、 Python の公式 ドキュメントの more about packages を読んで下さい。  
 mysite/settings.py:
 Django プロジェクトの設定ファイルです。  
 設定の仕組みは Djangoの設定 を参照してください。  
-mysite/urls.py: Django プロジェクトの URL 宣言、いうなれば Django サイトにおける「目次」に相当します。  
+- mysite/urls.py:  
+Django プロジェクトの URL 宣言、いうなれば Django サイトにおける「目次」に相当します。  
 詳しくは URL ディスパッチャ を参照 してください。  
-- mysite/wsgi.py:
+- mysite/wsgi.py:  
 プロジェクトをサーブするためのWSGI互換Webサーバーとのエントリーポイントです。  
 詳細は WSGI とともにデプロイするには を参照してください。
 
