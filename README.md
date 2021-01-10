@@ -398,3 +398,11 @@ class Spam:
 spam = Spam(200)
 spam.ham()
 ```
+
+## django
+
+```ps1
+# 仮想環境の作成
+python --version
+python  -m venv venv
+```
