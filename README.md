@@ -452,7 +452,7 @@ python manage.py runserver
 ### アプリケーション(polls)作成
 
 ```ps1
-# アプリケーションの作成
+#### アプリケーションの作成 ####
 python manage.py startapp polls
 <#
 polls/
@@ -469,6 +469,22 @@ polls/
 # urls.pyの追加し設定
 # mysite/urls.pyの設定を追加
 
-# SQLliteの構築
+
+#### SQLliteの構築 ####
 py manage.py migrate
+# models.pyの記述
+# mysite/settings.pyの「INSTALLED_APPS」の追加
+
+# Djangoにモデルに変更があったこと(この場合、新しいものを作成しました)を伝え、  
+# そして変更を マイグレーション の形で保存する。
+py manage.py makemigrations polls
+
+# migrate を再度実行し、 モデルのテーブルをデータベースに作成
+py manage.py migrate
+
+# adminユーザーの作成
+py manage.py createsuperuser
+
+
+####  ####
 ```
