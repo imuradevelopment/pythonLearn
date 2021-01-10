@@ -1,4 +1,87 @@
-# python
+# python(p48 まで)
+
+## 言語特徴
+
+- インタプリタ言語(1 行ずつ機械語に変換：逆はコンパイル言語)
+- 言語の習得とアプリケーション開発にかかる労力が少ない
+- インタプリタ上で実行されるため、C 言語や Java などに比べて実行速度は遅いが、多言語との連携が容易である
+
+## python でできること
+
+- 機械学習
+- ニューラルネットワーク
+- データサイエンス
+- GUI/Web アプリケーション
+
+## インストール
+
+- https://www.python.org/
+  - ディストリビューションによって、ライブラリの管理パッケージ等が異なる
+    - Anaconda
+    - PSF
+
+## 規約
+
+エンコード
+
+```python
+# 下記コメントは意味を成す。
+# coding: utf-8
+# または
+# -*- coding: utf-8 -*-
+```
+
+インデント  
+不要なインデントは実行時エラーになる  
+エスケープ  
+「/」
+
+## 変数とデータ型
+
+変数に格納する値には様々な**型**がある。  
+C や Java では、使用する変数は先立って明示的に型を指定して宣言しておく必要がある。(静的型付き言語)  
+これに対して、Python は動的型付き言語である。  
+また、日本語を変数名として使用できる。
+
+### 型の種類
+
+- 数値
+  - int
+  - float
+  - complex
+- 文字列
+  - raw stinrg
+  - stinrg
+- 真偽値
+  - bool
+- ヌルオブジェクト
+  - None
+
+### 型変換, 検査
+
+- 型(値)
+- type(値)
+- isinstance(値, 型)
+
+## メソッド
+
+- split()
+  - 文字列の分解
+- splitlines()
+  - 行の分離
+- join()
+  - リストの要素連結
+- replace()
+  - 文字列置換
+- isalpha(), isdecimal(), isalnum()
+  - すべての要素が「アルファベット, 数字, アルファベットか数字」
+- upper(), lower(), isupper(), islower()
+  - 大文字小文字変換、大文字小文字判定
+- capitalize(), title(), swapcase()
+  - 文頭を大文字に変換、各単語の先頭を大文字に変換、大文字小文字反転
+- ord)(), chr()
+
+  - 文字コードの取得、指定した文字コードの文字
 
 - 定数大文字
 - Python では、整数と小数点のある数（実数：浮動小数点数）は別
@@ -19,19 +102,16 @@
 ## 文字列
 
 ```python
-# エンコード指定(コメント形式で記述してOK)
-# -*- coding: utf-8 -*-
-
 # 改行あり
 text = """sdvc
 b.jb"""
 
 # in(真偽地)
-str_var = "abc"
-"a" in str_var
+str = "abc"
+"a" in str
 
 # 繰り返し
-str_var = str_var * 3
+str = str * 3
 
 # 部分指定(-1でlastIndex)
 #  str[開始インデックス:終了インデックス]
@@ -41,72 +121,112 @@ str_var = str_var * 3
 # max()
 ```
 
-## List, Tuple
+## List
 
 ```python
 # 宣言
-list_var = [1, 2, 3.4, "a", z]
-# Listより速い
-tuple_var = (1, 2, 3.4, "a", "test")
-# List固有(append, remove, reverse, sort)
-list_var.append("要素")
-list_var.append("要素")
-list_var.remove('要素')
-list_var.reverse()
-list_var.sort()
-# list_var.[0:4]
-# in
-# len()
-# min()
-# max()
+list = [1, 2, 3.4, "a", z]
+# 追加, 挿入
+list.append("要素")
+list.insert(index, "要素")
+# 連結
+list3 = list1 + list2  # 新規オブジェクトとして
+list1.extend(list2)    # リストの追加
+# 削除
+del list[0]
+list.remove('要素') # 指定要素の削除, 先頭から一致したもの
+list.pop() # 指定したインデックスの要素を取り出して削除, 引数なしで末尾対象
+# メンバシップの検査
+'要素' in list
+'要素' not in list
+# 要素の探索(なければValueError)
+list.index('要素')
+# カウント
+list.count('要素')
+len(list)
+# sum, sort, sorted, reverse
+sum(list)
+min(list)
+max(list)
+list.sort()   # リストそのものを変更
+list.sorted() # 別のリストにソート
+list.reverse()  # リストそのものを変更
+list.reversed() # 別のリストにソート
+# リストの複製
+list2 = list.copy() # shallowcopy
+import copy
+list2 = copy.copy(list) # shallowcopy
+list2 = copy.deepcopy(list) # deepcopy
+```
 
+## Tuple
+
+```python
+# Listより速い
+# Listと混在させる事がきる
+# 一度生成すると変更できない(イミュータブル)
+tuple = (1, 2, 3.4, "a", "test")
+# 括弧の省略
+(x, y) = (2, 3)
+# sorted()
+list = sorted(tuple)
 ```
 
 ## set
 
 ```python
-# セット(Set)は、ユニークなデータのグループを保持します。
-# セットはデータの順番を持たないため、文字列やリストのようにインデックシングを行うことが出来ません。
-# セットを使用するメリットは、ユニオン(合併)やインターセクション(積集合)、ディファレンス(差集合)の処理が高速に行える点です。
-set_var = {1, 2, "a", "b", 1, "a"}
-set_var2 = set([1, 2, "a", "b", 1, "a"])
+# 重複値は格納できない
+# 順番を保持せず、文字列やリストのようにインデックシングを行うことが出来ない。
+# セットを使用するメリットは、
+# ユニオン(合併)やインターセクション(積集合)、ディファレンス(差集合)の処理が高速に行える点です。
+set = {1, 2, "a", "b", 1, "a"}
+set = set([1, 2, "a", "b", 1, "a"])
 
-# in
-# len()
-# add, remove
-set_var.add("要素")
-set_var.remove("要素")
-# discard(要素がセットに存在している時に限り削除する)
-set_var.discard("要素")
+# 要素の追加, 削除, 取得, 複製
+set.add()
+set.discard()
+set.clear()
+len(set)
+set2 = set.copy()
 
+# 集合論の操作
+set.issubset(set2)              # 真偽値
+set.issuperset(set2)            # 真偽値
+set.isdisjoint(set2)            # 真偽値
+set.intersection(set2)          # set
+set.intersection.update(set2)   # set
+set.union(set2)                 # set
+set.update(set2)                # set
+set.differece(set2)             # set
+set.symmetric_difference(set2)  # set
 # union(合併), intersection(交差・積集合), difference(差集合)
 # 複数のセットから重複要素を省いて1つのセットにする処理のことです。
-set_var.union(set_var2)
+set.union(set2)
 # 指定したセット両方(全て)に重複している要素を抽出します。
-set_var.intersection(set_var2)
+set.intersection(set2)
 # 一方に存在し、もう一方に存在しない要素を抽出します。
-set_var.difference(set_var2)
+set.difference(set2)
 
 # symmetric_difference(2セット限定)
 # 順番に関係なくXとY一方のセットに存在する項目を抽出できる
-set_var.symmetric_difference(set_var2)
+set.symmetric_difference(set2)
 
 ```
 
 ## dectionary
 
 ```python
-dictionary_var = {'key1': 'Value1', 'key2': 'Value2'}
+dictionary = {'key1': 'Value1', 'key2': 'Value2'}
 
 # 追加, 更新 (あれば更新なければつい追加)
-dictionary_var['key3'] = 'value3'
+dictionary['key3'] = 'value3'
 
 # 取得 get (キーが存在していなくてもエラーにならない)
-dictionary_var.get('key3', 'No Existance')
+dictionary.get('key3', 'No Existance')
 
 # 削除 del, pop (popはキーが存在していなくてもエラーにならない)
-dictionary_var.del('key3')
-dictionary_var.pop('key3', 'No Existance')
+dictionary.del('key3')
+dictionary.pop('key3', 'No Existance')
 
 # in
 # len()
@@ -160,12 +280,12 @@ print("{0}".format( {str(x):x**2 for x in range(1,6)}))
 flg_true = True
 flg_false = False
 flg_none = None
-list_var = ["a", "b"]
-if list_var in "c" or flg_false == True :
+list = ["a", "b"]
+if list in "c" or flg_false == True :
   print(False)
 elif flg_true != True :
   print(False)
-elif not(list_var in "a" and flg_none == None) :
+elif not(list in "a" and flg_none == None) :
   print(False)
 else :
   print(True)
@@ -202,6 +322,7 @@ except ZeroDivisionError as e:
     print("args:{0}".format(e.args))
     print("message:{0}".format(e.message))
     print("{0}".format(e))
+finally:
 # type:<type 'exceptions.ZeroDivisionError'>
 # args:('integer division or modulo by zero',)
 # message:integer division or modulo by zero
@@ -257,7 +378,7 @@ spam(taro=165,jiro=180,saburo=170)
 # デストラクタ(オブジェクトが不要となりPythonが削除する時に自動で実行される関数)
 #   「__del__ 」であらわされるが、ほとんどの場合デストラクタは定義しない。
 # 継承
-#   
+#
 # 1.クラスSpamのオブジェクトspamを生成します(コンストラクタで初期化)
 # 2.spamオブジェクトがhamメソッドを呼び出します
 # 3.spamオブジェクトのhamメソッドはspamオブジェクト(=自身)のeggメソッドを呼び出します

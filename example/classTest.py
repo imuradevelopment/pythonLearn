@@ -1,5 +1,10 @@
+import random
+
+# coding: utf-8
+# -*- coding: utf-8 -*-
+
 class LowLevelMonster:
-    def __init__(self, HP=10, MP=20, Level=1):
+    def __init__(self, HP, MP, Level):
         self.HP = HP
         self.MP = MP
         self.Level = Level
@@ -15,7 +20,12 @@ class LowLevelMonster:
 
 
 class Slime(LowLevelMonster):
-    def __init__(self, name, HP, MP, Level):
+    def __init__(self,
+                name,
+                HP=random.randrange(1, 10),
+                MP=random.randrange(1, 10),
+                Level=random.randrange(1, 10)
+                ):
         self.name = name
         super().__init__(HP, MP, Level)
 
@@ -37,3 +47,6 @@ class Slime(LowLevelMonster):
 rimuru = Slime("rimuru", 100, 200, 10)
 rimuru.attack()
 rimuru.getStatus()
+rimuru2 = Slime("rimuru2")
+rimuru2.attack()
+rimuru2.getStatus()
