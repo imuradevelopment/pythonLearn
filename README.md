@@ -423,6 +423,7 @@ Django プロジェクトの URL 宣言、いうなれば Django サイトにお
 詳細は WSGI とともにデプロイするには を参照してください。
 
 ## djangoチュートリアル
+
 ### 仮想環境構築
 
 ```ps1
@@ -436,10 +437,38 @@ pip install django
 pip list
 ```
 
-### チュートリアル
+### プロジェクト(mysite)作成
+参考リンク:  
+[django公式チュートリアル](https://docs.djangoproject.com/ja/2.2/intro/tutorial01/)  
 
 ```ps1
 # djangoプロジェクト作成
 django-admin startproject mysite
+cd mysite
+# 起動
+python manage.py runserver
+```
 
+### アプリケーション(polls)作成
+
+```ps1
+# アプリケーションの作成
+python manage.py startapp polls
+<#
+polls/
+    __init__.py       
+    admin.py          
+    apps.py           
+    migrations/       
+        __init__.py   
+    models.py         
+    tests.py          
+    views.py          (何を表示するのか)
+#>
+
+# urls.pyの追加し設定
+# mysite/urls.pyの設定を追加
+
+# SQLliteの構築
+py manage.py migrate
 ```
