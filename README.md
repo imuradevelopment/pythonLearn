@@ -443,9 +443,20 @@ pip list
 
 ```ps1
 # djangoプロジェクト作成
+<#
+作成されるファイル群
+mysite/               プロジェクトのただの入れ物
+    manage.py         ロジェクトに対する様々な操作を行うためのコマンドラインユーティリティ
+    mysite/           プロジェクトの実際の Python パッケージ,  import に 使用する名前 (例えば import mysite.urls) 
+        __init__.py   Python パッケージであることを Python に知らせるための空のファイル
+        settings.py   Django プロジェクトの設定ファイル
+        urls.py       Django プロジェクトの URL 宣言、いうなれば Django サイトにおける「目次」に相当
+        wsgi.py       プロジェクトをサーブするためのWSGI互換Webサーバーとのエントリーポイント
+#>
 django-admin startproject mysite
 cd mysite
-# 起動
+
+# django開発サーバー起動:port8000(絶対に運用環境では 使わない)
 python manage.py runserver
 ```
 
@@ -453,6 +464,19 @@ python manage.py runserver
 
 ```ps1
 #### アプリケーションの作成 ####
+# アプリケーションは Python path のどこにでも置ける
+<#
+作成されるファイル群(アプリの全体像)
+polls/
+    __init__.py
+    admin.py
+    apps.py
+    migrations/
+        __init__.py
+    models.py
+    tests.py
+    views.py
+#>
 python manage.py startapp polls
 <#
 polls/
