@@ -403,26 +403,27 @@ spam.ham()
 
 ファイルはそれぞれ以下のような役割を持っています:  
 外側の mysite/ ルートディレクトリは、このプロジェクトのただの入れ物です。  
-この名前は Django に関係しませんので、好きな名前に変更できます。  
-- manage.py:  
-Django プロジェクトに対する様々な操作を行うためのコマンドラインユーティリティです｡  
-詳しくは django-admin と manage.py 内の manage.py を参照してください｡  
-内側の mysite/ ディレクトリは、このプロジェクトの実際の Python パッケージです。  
-この名前が Python パッケージの名前であり、 import の際に 使用する名前です (例えば import mysite.urls) 。  
-- mysite/__init__.py:  
-このディレクトリが Python パッケージであることを Python に知らせるための空のファイルです。  
-Python の初心者は、 Python の公式 ドキュメントの more about packages を読んで下さい。  
-mysite/settings.py:
-Django プロジェクトの設定ファイルです。  
-設定の仕組みは Djangoの設定 を参照してください。  
-- mysite/urls.py:  
-Django プロジェクトの URL 宣言、いうなれば Django サイトにおける「目次」に相当します。  
-詳しくは URL ディスパッチャ を参照 してください。  
-- mysite/wsgi.py:  
-プロジェクトをサーブするためのWSGI互換Webサーバーとのエントリーポイントです。  
-詳細は WSGI とともにデプロイするには を参照してください。
+この名前は Django に関係しませんので、好きな名前に変更できます。
 
-## djangoチュートリアル
+- manage.py:  
+  Django プロジェクトに対する様々な操作を行うためのコマンドラインユーティリティです｡  
+  詳しくは django-admin と manage.py 内の manage.py を参照してください｡  
+  内側の mysite/ ディレクトリは、このプロジェクトの実際の Python パッケージです。  
+  この名前が Python パッケージの名前であり、 import の際に 使用する名前です (例えば import mysite.urls) 。
+- mysite/**init**.py:  
+  このディレクトリが Python パッケージであることを Python に知らせるための空のファイルです。  
+  Python の初心者は、 Python の公式 ドキュメントの more about packages を読んで下さい。  
+  mysite/settings.py:
+  Django プロジェクトの設定ファイルです。  
+  設定の仕組みは Django の設定 を参照してください。
+- mysite/urls.py:  
+  Django プロジェクトの URL 宣言、いうなれば Django サイトにおける「目次」に相当します。  
+  詳しくは URL ディスパッチャ を参照 してください。
+- mysite/wsgi.py:  
+  プロジェクトをサーブするための WSGI 互換 Web サーバーとのエントリーポイントです。  
+  詳細は WSGI とともにデプロイするには を参照してください。
+
+## django チュートリアル
 
 ### 仮想環境構築
 
@@ -438,32 +439,38 @@ pip list
 ```
 
 ### プロジェクト(mysite)作成
+
 参考リンク:  
-[django公式チュートリアル](https://docs.djangoproject.com/ja/2.2/intro/tutorial01/)  
+[django 公式チュートリアル](https://docs.djangoproject.com/ja/2.2/intro/tutorial01/)
+
+1. django プロジェクト作成
 
 ```ps1
-# djangoプロジェクト作成
+django-admin startproject mysite
+cd mysite
 <#
 作成されるファイル群
 mysite/               プロジェクトのただの入れ物
     manage.py         ロジェクトに対する様々な操作を行うためのコマンドラインユーティリティ
-    mysite/           プロジェクトの実際の Python パッケージ,  import に 使用する名前 (例えば import mysite.urls) 
+    mysite/           プロジェクトの実際の Python パッケージ,  import に 使用する名前 (例えば import mysite.urls)
         __init__.py   Python パッケージであることを Python に知らせるための空のファイル
         settings.py   Django プロジェクトの設定ファイル
         urls.py       Django プロジェクトの URL 宣言、いうなれば Django サイトにおける「目次」に相当
         wsgi.py       プロジェクトをサーブするためのWSGI互換Webサーバーとのエントリーポイント
 #>
-django-admin startproject mysite
-cd mysite
+```
 
-# django開発サーバー起動:port8000(絶対に運用環境では 使わない)
+2. django 開発サーバー起動:port8000
+
+```ps1
+# 絶対に運用環境では 使わない
 python manage.py runserver
 ```
 
-### アプリケーション(polls)作成
+3. アプリケーション(polls)作成
 
 ```ps1
-#### アプリケーションの作成 ####
+python manage.py startapp polls
 # アプリケーションは Python path のどこにでも置ける
 <#
 作成されるファイル群(アプリの全体像)
@@ -477,38 +484,369 @@ polls/
     tests.py
     views.py
 #>
-python manage.py startapp polls
-<#
-polls/
-    __init__.py       
-    admin.py          
-    apps.py           
-    migrations/       
-        __init__.py   
-    models.py         
-    tests.py          
-    views.py          (何を表示するのか)
-#>
+```
 
-# urls.pyの追加し設定
-# mysite/urls.pyの設定を追加
+4. ビューの作成
+
+```python
+# polls/views.py¶
+from django.http import HttpResponse
+from django.template import loader # templateの読み込みのみ
+
+from django.http import Http404 # 404 エラーの送出
+from django.shortcuts import get_object_or_404 # 404 エラーの送出(簡易：オブジェクトがない場合)
+from django.shortcuts import get_list_or_404 # 404 エラーの送出(簡易：リストが空の場合)
+# テンプレートをロードしてコンテキストに値を入れ、
+# テンプレートをレンダリングした結果を HttpResponse オブジェクトで返す
+# HttpResponse, loaderが必要なくなる
+from django.shortcuts import render
+rom django.urls import reverse # 設定した URLconfを返す
+from .models import Choice, Question
+
+def index(request):
+    latest_question_list = Question.objects.order_by('-pub_date')[:5]
+    context = {'latest_question_list': latest_question_list}
+    return render(request, 'polls/index.html', context)
+
+def detail_stb(request, question_id):
+    return HttpResponse("You're looking at question %s." % question_id)
+
+def detail_404_error(request, question_id):
+    try:
+        question = Question.objects.get(pk=question_id)
+    except Question.DoesNotExist:
+        raise Http404("Question does not exist")
+    return render(request, 'polls/detail.html', {'question': question})
+
+def detail(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    return render(request, 'polls/detail.html', {'question': question})
 
 
-#### SQLliteの構築 ####
+def vote_stab(request, question_id):
+    return HttpResponse("You're voting on question %s." % question_id)
+
+def vote(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    try:
+        selected_choice = question.choice_set.get(pk=request.POST['choice'])
+    except (KeyError, Choice.DoesNotExist):
+        # POST データに choice がなければ、質問投票フォームを再表示します。
+        return render(request, 'polls/detail.html', {
+            'question': question,
+            'error_message': "選択肢を選択していません。",
+        })
+    else:
+        selected_choice.votes += 1
+        selected_choice.save()
+        # POSTデータを正常に処理した後は、常にHttpResponseRedirectを返します。
+        # これにより、ユーザーが[戻る]ボタンを押した場合にデータが2回投稿されるのを防ぎます。
+        return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
+
+def results_stab(request, question_id):
+    response = "You're looking at the results of question %s."
+    return HttpResponse(response % question_id)
+
+def results(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    return render(request, 'polls/results.html', {'question': question})
+```
+
+5. ビュー呼ぶための設定(urls.py で URL の対応付け)
+
+```python
+# polls/urls.py
+# index ビューを URLconf に紐付ける
+# URLからビューを得るために、Django は「URLconf」と呼ばれているものを使います。
+# URLconf はURLパターンをビューにマッピングします。
+from django.urls import path
+
+from . import views
+
+# URLconf に名前空間を追加
+app_name = 'polls'
+
+# 山括弧を使用すると、URLの一部が「キャプチャ」され、
+# キーワード引数としてビュー関数に送信します。
+# テンプレートタグ{％url％}によって呼び出される「name」
+urlpatterns = [
+    # ex: /polls/
+    path('', views.index, name='index'),
+    # ex: /polls/specifics/5/
+    path('specifics/<int:question_id>/', views.detail, name='detail'),
+    # ex: /polls/5/results/
+    path('<int:question_id>/results/', views.results, name='results'),
+    # ex: /polls/5/vote/
+    path('<int:question_id>/vote/', views.vote, name='vote'),
+]
+
+# mysite/urls.py(リクエストから呼ばれる)
+from django.contrib import admin
+from django.urls import include, path
+
+# /polls/34/にリクエストが来た場合
+# `polls/` にマッチした箇所を見つけた後、一致した文字列 ("polls/") を取り除き、
+# 残りの文字列である "34/" を次の処理のために 『polls.urls』 の URLconf に渡します。
+# これは '<int：question_id>/' に一致し、結果として下記のように detail() が呼び出されます。
+urlpatterns = [
+    path('polls/', include('polls.urls')),
+    path('admin/', admin.site.urls),
+]
+```
+
+6. Database の設定(初期化)
+
+```ps1
+#  INSTALLED_APPS の設定を参照するとともに、
+# mysite/settings.py ファイルのデータベース設定に従って
+# 必要なすべてのデータベースのテーブルを作成します。
+python manage.py migrate
+```
+
+7. モデルの作成
+
+```python
+# polls/models.py
+import datetime
+
+from django.db import models
+from django.utils import timezone
+
+class Question(models.Model):
+    question_text = models.CharField(max_length=200)
+    pub_date = models.DateTimeField('date published')
+    def __str__(self):
+        return self.question_text
+    def was_published_recently(self):
+        return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
+
+
+class Choice(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    choice_text = models.CharField(max_length=200)
+    votes = models.IntegerField(default=0)
+    def __str__(self):
+        return self.choice_text
+```
+
+8. モデルを有効にする
+
+```python
+# mysite/settings.py¶
+INSTALLED_APPS = [
+    'polls.apps.PollsConfig',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+]
+```
+
+9. モデルの適応
+
+```ps1
+# makemigrations を実行することで、
+# Djangoにモデルに変更があったことを伝え、
+# そして変更を マイグレーション の形で保存
+# マイグレーションはDjangoがモデルの変更を保存する方法です。
+# データベーススキーマでもあります
+python manage.py makemigrations polls
+```
+
+10. 作成したモデルのテーブルをデータベースに作成
+
+```ps1
+python manage.py migrate
+```
+
+11. Django Admin の設定
+
+```ps1
+# 管理ユーザーを作成する
+python manage.py createsuperuser
+```
+
+12. Poll アプリを admin 上で編集できるようにする
+
+```python
+# polls/admin.py
+from django.contrib import admin
+
+from .models import Question
+
+admin.site.register(Question)
+```
+
+13. テンプレートの作成
+    [テンプレートガイド](https://docs.djangoproject.com/ja/2.2/topics/templates/)  
+    polls/urls.py の  
+    "path()関数"で"name"引数を定義したので"{％url％}"が使用可能  
+    "app_name"で URLconf に名前空間を追加したことで"polls:"が使用可能
+
+```html
+<!--polls/templates/polls/index.html-->
+{% if latest_question_list %}
+<ul>
+  {% for question in latest_question_list %}
+  <!--
+        <li><a href="/polls/{{ question.id }}/">{{ question.question_text }}</a></li>
+        -->
+  <li>
+    <a href="{% url 'polls:detail' question.id %}"
+      >{{ question.question_text }}</a
+    >
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>No polls are available.</p>
+{% endif %}
+
+<!--polls/templates/polls/detail.html-->
+<!--POST フォーム(データを改ざんされる恐れのある) を作成しているので、
+    クロス サイトリクエストフォージェリを心配する必要があります。
+    手短に言うと、自サイト内を URL に指定した POST フォームには全て、 
+    {% csrf_token %} テンプレートタグを使うべきです。
+-->
+<h1>{{ question.question_text }}</h1>
+
+{% if error_message %}
+<p><strong>{{ error_message }}</strong></p>
+{% endif %}
+
+<form action="{% url 'polls:vote' question.id %}" method="post">
+  {% csrf_token %}
+  <!--forloop.counter は、 for タグのループが何度実行されたかを表す値-->
+  {% for choice in question.choice_set.all %}
+  <input
+    type="radio"
+    name="choice"
+    id="choice{{ forloop.counter }}"
+    value="{{ choice.id }}"
+  />
+  <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label
+  ><br />
+  {% endfor %}
+  <input type="submit" value="Vote" />
+</form>
+
+<!--polls/templates/polls/results.html¶-->
+<h1>{{ question.question_text }}</h1>
+
+<ul>
+  {% for choice in question.choice_set.all %}
+  <li>
+    {{ choice.choice_text }} -- {{ choice.votes }} vote{{ choice.votes|pluralize
+    }}
+  </li>
+  {% endfor %}
+</ul>
+
+<a href="{% url 'polls:detail' question.id %}">Vote again?</a>
+```
+
+14. 汎用ビュー
+    ビューは基本的な Web 開発の一般的なケース、  
+    URL を介して渡されたパラメータに従ってデータベースからデータを取り出し、  
+    テンプレートをロードして、レンダリングしたテンプレートを返します。  
+    これはきわめてよくあることなので、  
+    Django では、汎用ビュー（generic view）というショートカットを提供しています。  
+    汎用ビューとは、よくあるパターンを抽象化して、  
+    Python コードすら書かずにアプリケーションを書き上げられる状態にしたものです。  
+    poll アプリを汎用ビューシステムに変換して、 コードをばっさり捨てる。  
+     1. URLconf を変換する。 2. 古い不要なビューを削除する。 3. 新しいビューに Django の汎用ビューを設定する。  
+    [汎用ビューガイド](https://docs.djangoproject.com/ja/2.2/topics/class-based-views/)
+
+```python
+# polls/urls.py
+# 1. URLconf を変換する。
+# <question_id> から <pk> に変更
+from django.urls import path
+
+from . import views
+
+app_name = 'polls'
+urlpatterns = [
+    path('', views.IndexView.as_view(), name='index'),
+    path('<int:pk>/', views.DetailView.as_view(), name='detail'),
+    path('<int:pk>/results/', views.ResultsView.as_view(), name='results'),
+    path('<int:question_id>/vote/', views.vote, name='vote'),
+]
+
+# polls/views.py¶
+# 2. 古い不要なビューを削除する。
+# ここでは、ListView(オブジェクトのリストを表示する)
+# DetailView(あるタイプのオブジェクトの詳細ページを表示する) という二つの概念を抽象化
+from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
+from django.views import generic
+
+from .models import Choice, Question
+
+
+class IndexView(generic.ListView):
+    template_name = 'polls/index.html'
+    context_object_name = 'latest_question_list'
+
+    def get_queryset(self):
+        """最後に公開された5つの質問を返します。"""
+        return Question.objects.order_by('-pub_date')[:5]
+
+#  "pk" という名前で URL からプライマリキーをキャプチャして渡す
+class DetailView(generic.DetailView):
+    model = Question
+    template_name = 'polls/detail.html'
+    # context_object_nameはデフォルトでquestionになる
+
+
+class ResultsView(generic.DetailView):
+    model = Question
+    template_name = 'polls/results.html'
+
+
+```
+
+#### SQLlite の構築
+
 py manage.py migrate
-# models.pyの記述
-# mysite/settings.pyの「INSTALLED_APPS」の追加
 
-# Djangoにモデルに変更があったこと(この場合、新しいものを作成しました)を伝え、  
+# models.py の記述
+
+# mysite/settings.py の「INSTALLED_APPS」の追加
+
+# Django にモデルに変更があったこと(この場合、新しいものを作成しました)を伝え、
+
 # そして変更を マイグレーション の形で保存する。
+
 py manage.py makemigrations polls
 
 # migrate を再度実行し、 モデルのテーブルをデータベースに作成
+
 py manage.py migrate
 
-# adminユーザーの作成
+# admin ユーザーの作成
+
 py manage.py createsuperuser
 
+#### postgreSQL
 
-####  ####
+pip install psycopg2-binary
+
+```
+
+
+### プログラム実行順
+
+1. mysite/manage.py
+1. mysite/__init__.py
+1. mysite/settings.py
+1. mysite/opps.py
+1. polls/models.py
+1. polls/admin.py
+1. mysite/manage.py
+
+1. mysite/
 ```
