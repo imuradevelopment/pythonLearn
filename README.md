@@ -986,17 +986,3 @@ Ran 1 test in 0.002s
 OK
 Destroying test database for alias 'default'...
 ```
-17. アプリ の構造をカスタマイズする
-
-### プログラム実行順
-
-1. mysite/manage.py
-1. mysite/__init__.py
-1. mysite/settings.py
-1. mysite/opps.py
-1. polls/models.py
-1. polls/admin.py
-1. mysite/manage.py
-
-1. mysite/
-```
