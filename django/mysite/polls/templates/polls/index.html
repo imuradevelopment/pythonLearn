@@ -1,3 +1,17 @@
+<!--<div>
+<form action="//www-creators.com/rsc/receiver.php" method="post">
+  <label class="label" for="message">質問を投稿する</label>
+  <textarea rows="4" id="message" placeholder="20文字以内で入力してください。" name="comment"></textarea>
+  <input type="submit">
+</form>
+<style>
+label, input[type=text]{
+ display:block;
+}
+</style>
+</div>
+-->
+
 {% if latest_question_list %}
     <ul>
     {% for question in latest_question_list %}
@@ -6,5 +20,5 @@
     {% endfor %}
     </ul>
 {% else %}
-    <p>No polls are available.</p>
+    <p>投票は利用できません</p>
 {% endif %}

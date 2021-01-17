@@ -805,39 +805,79 @@ class DetailView(generic.DetailView):
 class ResultsView(generic.DetailView):
     model = Question
     template_name = 'polls/results.html'
+```
+15. 自動テストの導入
+```python
+# polls/tests.py
+import datetime
 
+from django.test import TestCase
+from django.utils import timezone
+
+from .models import Question
+
+"""テスト用のメソッドとして、test で始まるメソッドを作成。"""
+class QuestionModelTests(TestCase):
+
+  def test_was_published_recently_with_future_question(self):
+      """
+      was_published_recently（）は、pub_dateが将来の質問に対してFalseを返します。
+      """
+      time = timezone.now() + datetime.timedelta(days=30)
+      future_question = Question(pub_date=time)
+      self.assertIs(future_question.was_published_recently(), False)
+
+  def test_was_published_recently_with_old_question(self):
+      """
+      was_published_recently（）は、pub_dateが1日より古い質問に対してFalseを返します。
+      """
+      time = timezone.now() - datetime.timedelta(days=1, seconds=1)
+      old_question = Question(pub_date=time)
+      self.assertIs(old_question.was_published_recently(), False)
+
+  def test_was_published_recently_with_recent_question(self):
+      """
+      was_published_recently（）は、pub_dateが月末以内の質問に対してTrueを返します。
+      """
+      time = timezone.now() - datetime.timedelta(hours=23, minutes=59, seconds=59)
+      recent_question = Question(pub_date=time)
+      self.assertIs(recent_question.was_published_recently(), True)
 
 ```
 
-#### SQLlite の構築
-
-py manage.py migrate
-
-# models.py の記述
-
-# mysite/settings.py の「INSTALLED_APPS」の追加
-
-# Django にモデルに変更があったこと(この場合、新しいものを作成しました)を伝え、
-
-# そして変更を マイグレーション の形で保存する。
-
-py manage.py makemigrations polls
-
-# migrate を再度実行し、 モデルのテーブルをデータベースに作成
-
-py manage.py migrate
-
-# admin ユーザーの作成
-
-py manage.py createsuperuser
-
-#### postgreSQL
-
-pip install psycopg2-binary
-
+16. テストの実行
+```ps1
+py manage.py test polls
 ```
+```ps1
+Creating test database for alias 'default'...
+System check identified no issues (0 silenced).
+F
+======================================================================
+FAIL: test_was_published_recently_with_future_question (polls.tests.QuestionModelTests)
+「was_published_recently（）」は、pub_dateが将来の質問に対してFalseを返します。
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\work\python\django\mysite\polls\tests.py", line 17, in test_was_published_recently_with_future_question
+    self.assertIs(future_question.was_published_recently(), False)
+AssertionError: True is not False
 
+----------------------------------------------------------------------
+Ran 1 test in 0.003s
 
+FAILED (failures=1)
+Destroying test database for alias 'default'...
+```
+```ps1
+Creating test database for alias 'default'...
+System check identified no issues (0 silenced).
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.002s
+
+OK
+Destroying test database for alias 'default'...
+```
 ### プログラム実行順
 
 1. mysite/manage.py

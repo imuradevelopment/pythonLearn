@@ -32,7 +32,7 @@ def vote(request, question_id):
         # 質問投票フォームを再表示します。
         return render(request, 'polls/detail.html', {
             'question': question,
-            'error_message': "You didn't select a choice.",
+            'error_message': "選択していません。",
         })
     else:
         selected_choice.votes += 1
