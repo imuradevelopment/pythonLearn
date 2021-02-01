@@ -3,3 +3,5 @@ django/venv
 DRF/venv
 DRF/drf-vue-sample-master/frontend/node_modules
 DRF/.vscode
+DRF2/.vscode
+DRF2/venv
